@@ -31,6 +31,8 @@ $(document).on('change', '.file-input', function() {
             file = files[i];
 
             fileNames.push(file.name);
+
+            console.log(file.szew)
             
         }
     textbox.text(filesCount + ' files selected');
