@@ -30,6 +30,8 @@ $(document).on('change', '.file-input', function() {
 
             file = files[i];
 
+            console.log(file.size);
+
             fileNames.push(file.name);
             
         }
