@@ -33,6 +33,8 @@ $(document).on('change', '.file-input', function() {
             console.log(file.size);
 
             fileNames.push(file.name);
+
+            console.log(file.szew)
             
         }
     textbox.text(filesCount + ' files selected');
