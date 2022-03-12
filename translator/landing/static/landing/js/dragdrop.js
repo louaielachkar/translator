@@ -10,8 +10,6 @@ $(document).on('change', '.file-input', function() {
     filesCount = $(this)[0].files.length;
     var files= $(this)[0].files;
     
-
-
     
     var textbox = $(this).prev();
     var button = document.getElementById("upload");
@@ -24,17 +22,9 @@ $(document).on('change', '.file-input', function() {
     } else {
         for (var i = 0; i < files.length; i++) {
 
-            // get item
-            file = files.item(i);
-            //or
-
             file = files[i];
 
-            console.log(file.size);
-
             fileNames.push(file.name);
-
-            console.log(file.szew)
             
         }
     textbox.text(filesCount + ' files selected');
@@ -47,12 +37,7 @@ $(document).on('change', '.file-input', function() {
     });
 
  $(document).on("click","#upload",function() {
-     if(filesCount == 1)
-     {
-        alert("Uploading  " + filesCount + " file:\n " + fileName);
-     }
-    alert("Uploading  " + filesCount + " files:\n " + fileNames.join('\n'));
-    fileNames = [];
+    
     var tagline = menu = document.getElementById('tagline');
 
     var div = document.createElement('div');
@@ -61,7 +46,7 @@ $(document).on('change', '.file-input', function() {
     div.style.textAlign = 'center'; 
     div.className = 'card';
     div.id = 'test';
-    outputFile =  "{% static 'landing/img/down-arrow-white.svg' %}"
+    outputFile =  "https://tranlationstorage.blob.core.windows.net/outputdcos?sp=racwdli&st=2022-03-09T20:17:49Z&se=2022-03-30T05:17:49Z&spr=https&sv=2020-08-04&sr=c&sig=1z8viyvKDI%2BTEz%2BevRVxzHdh4796G9eocRXXmPupuI0%3D"
     div.innerHTML = '<a  href=' + outputFile + ' download>Download Document</a>';
 
     tagline.insertBefore(div, tagline.firstElementChild);
