@@ -61,7 +61,7 @@ def tranlsate_file():
     print(f'response status code: {response.status_code}\nresponse status: {response.reason}\nresponse headers: {response.headers}')
 
 def download_file():
-    local_path = "C:\\Users\\hp\\translator\\input"
+    local_path = "X:\Work\Plans\Fiverr\samples\inputs"
     download_file_path = os.path.join(local_path, 'DOWNLOAD')
     download_container_client = ContainerClient.from_connection_string(CONNECTIONSTRING, OUTPUT_CONTAINER_NAME)
     print("\nDownloading blob to \n\t" + download_file_path)
