@@ -2,6 +2,7 @@ from django.shortcuts import render
 from azure.storage.blob import ContainerClient
 import requests
 import os
+from django.conf import settings
 
 
 CONNECTIONSTRING = "DefaultEndpointsProtocol=https;AccountName=tranlationstorage;AccountKey=iuimicaeQIxYRpLG68SIkexTxyMhKo6wbJbZsxKZXlfixouWJS7mhuNZAIE4k1oCSKzcI+xRI+58+AStyL9coA==;EndpointSuffix=core.windows.net"
@@ -22,6 +23,11 @@ def upload_file(file):
     blob_client = upload_container_client.get_blob_client(file.name)
     blob_client.upload_blob(file)
     print(f'{file.name} uploaded to blob storage')
+    print("\nListing blobs...")
+    # List the blobs in the container
+    blob_list = upload_container_client.list_blobs()
+    for blob in blob_list:
+        print("\t" + blob.name)
 
 def tranlsate_file():
     endpoint = "https://doctransweb.cognitiveservices.azure.com/translator/text/batch/v1.0"
@@ -33,12 +39,12 @@ def tranlsate_file():
         "inputs": [
             {
                 "source": {
-                    "sourceUrl": "https://tranlationstorage.blob.core.windows.net/inputdocs?sp=racwdli&st=2022-02-27T13:53:06Z&se=2022-03-02T21:53:06Z&spr=https&sv=2020-08-04&sr=c&sig=oXytV7oM%2FCwYiR0nVCLm%2FWFGR5DnzdRYoSBVbN%2BE8Ec%3D",
+                    "sourceUrl": "https://tranlationstorage.blob.core.windows.net/inputdocs?sp=racwdli&st=2022-03-09T20:17:11Z&se=2022-03-30T05:17:11Z&spr=https&sv=2020-08-04&sr=c&sig=U0%2F%2FTZ739gvrVwAVYE2HTky8HRVSXCgLPqKOi42hrWA%3D",
                     "storageSource": "AzureBlob"
                 },
                 "targets": [
                     {
-                        "targetUrl": "https://tranlationstorage.blob.core.windows.net/outputdcos?sp=racwdli&st=2022-02-27T13:53:50Z&se=2022-03-02T21:53:50Z&spr=https&sv=2020-08-04&sr=c&sig=OAKSXpZlkTkaH897eI4h3IZQRPmT9oZJr2e7h0crH%2Bo%3D",
+                        "targetUrl": "https://tranlationstorage.blob.core.windows.net/outputdcos?sp=racwdli&st=2022-03-09T20:17:49Z&se=2022-03-30T05:17:49Z&spr=https&sv=2020-08-04&sr=c&sig=1z8viyvKDI%2BTEz%2BevRVxzHdh4796G9eocRXXmPupuI0%3D",
                         "storageSource": "AzureBlob",
                         "language": "es"
                     }
@@ -56,8 +62,7 @@ def tranlsate_file():
     print(f'response status code: {response.status_code}\nresponse status: {response.reason}\nresponse headers: {response.headers}')
 
 def download_file():
-    local_path = "X:\Work\Plans\Fiverr\samples\inputs"
-    download_file_path = os.path.join(local_path, 'DOWNLOAD')
+    download_file_path = os.path.join(settings.MEDIA_ROOT, 'DOWNLOAD.docx')
     download_container_client = ContainerClient.from_connection_string(CONNECTIONSTRING, OUTPUT_CONTAINER_NAME)
     print("\nDownloading blob to \n\t" + download_file_path)
     my_blobs = download_container_client.list_blobs()
