@@ -2,7 +2,8 @@ from django.shortcuts import render
 from azure.storage.blob import ContainerClient
 import requests
 import os
-from time import sleep
+from django.conf import settings
+
 
 CONNECTIONSTRING = "DefaultEndpointsProtocol=https;AccountName=tranlationstorage;AccountKey=iuimicaeQIxYRpLG68SIkexTxyMhKo6wbJbZsxKZXlfixouWJS7mhuNZAIE4k1oCSKzcI+xRI+58+AStyL9coA==;EndpointSuffix=core.windows.net"
 INPUT_CONTAINER_NAME = "inputdocs"
@@ -61,8 +62,7 @@ def tranlsate_file():
     print(f'response status code: {response.status_code}\nresponse status: {response.reason}\nresponse headers: {response.headers}')
 
 def download_file():
-    local_path = "X:\Work\Plans\Fiverr\samples\inputs"
-    download_file_path = os.path.join(local_path, 'DOWNLOAD')
+    download_file_path = os.path.join(settings.MEDIA_ROOT, 'DOWNLOAD')
     download_container_client = ContainerClient.from_connection_string(CONNECTIONSTRING, OUTPUT_CONTAINER_NAME)
     print("\nDownloading blob to \n\t" + download_file_path)
     my_blobs = download_container_client.list_blobs()

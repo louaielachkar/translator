@@ -59,7 +59,7 @@ $(document).on('change', '.file-input', function() {
     div.style.textAlign = 'center'; 
     div.className = 'card';
     div.id = 'test';
-    outputFile =  "{% static 'landing/img/down-arrow-white.svg' %}"
+    outputFile =  "{% media 'test4.docx' %}"
     div.innerHTML = '<a  href=' + outputFile + ' download>Download Document</a>';
 
     tagline.insertBefore(div, tagline.firstElementChild);
