@@ -9,10 +9,7 @@ $(document).on('change', '.file-input', function() {
 
     filesCount = $(this)[0].files.length;
     var files= $(this)[0].files;
-    
-
-
-    
+        
     var textbox = $(this).prev();
     var button = document.getElementById("upload");
 
@@ -26,13 +23,7 @@ $(document).on('change', '.file-input', function() {
 
             // get item
             file = files.item(i);
-            //or
-
-            file = files[i];
-
             fileNames.push(file.name);
-
-            console.log(file.szew)
             
         }
     textbox.text(filesCount + ' files selected');
@@ -40,17 +31,10 @@ $(document).on('change', '.file-input', function() {
     }
     button.style.visibility = "visible";
 
-
-
     });
 
  $(document).on("click","#upload",function() {
-     if(filesCount == 1)
-     {
-        alert("Uploading  " + filesCount + " file:\n " + fileName);
-     }
-    alert("Uploading  " + filesCount + " files:\n " + fileNames.join('\n'));
-    fileNames = [];
+   
     var tagline = menu = document.getElementById('tagline');
 
     var div = document.createElement('div');
@@ -59,8 +43,7 @@ $(document).on('change', '.file-input', function() {
     div.style.textAlign = 'center'; 
     div.className = 'card';
     div.id = 'test';
-    outputFile =  "{% media 'test4.docx' %}"
-    div.innerHTML = '<a  href=' + outputFile + ' download>Download Document</a>';
+    div.innerHTML = '<h4 class="card-title">Your document was downloaded</h4>';
 
     tagline.insertBefore(div, tagline.firstElementChild);
 });
