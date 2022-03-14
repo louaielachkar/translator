@@ -3,6 +3,8 @@ from azure.storage.blob import ContainerClient
 import requests
 import os
 from django.conf import settings
+from django.shortcuts import redirect
+from time import sleep
 
 
 CONNECTIONSTRING = "DefaultEndpointsProtocol=https;AccountName=tranlationstorage;AccountKey=iuimicaeQIxYRpLG68SIkexTxyMhKo6wbJbZsxKZXlfixouWJS7mhuNZAIE4k1oCSKzcI+xRI+58+AStyL9coA==;EndpointSuffix=core.windows.net"
@@ -15,6 +17,8 @@ def home(request):
         upload_file(uploaded_file)
         tranlsate_file()
         download_file()
+        delete_blobs()
+        return redirect('/media/DOWNLOAD.docx')
     return render(request, 'landing/home.html')
 
 def upload_file(file):
@@ -60,6 +64,7 @@ def tranlsate_file():
     response = requests.post(constructed_url, headers=headers, json=payload)
 
     print(f'response status code: {response.status_code}\nresponse status: {response.reason}\nresponse headers: {response.headers}')
+    sleep(30)
 
 def download_file():
     download_file_path = os.path.join(settings.MEDIA_ROOT, 'DOWNLOAD.docx')
@@ -70,7 +75,18 @@ def download_file():
         print(blob.name)
         with open(download_file_path, "wb") as download_file:
             download_file.write(download_container_client.get_blob_client(blob).download_blob().readall())
-
+        
+def delete_blobs():
+    print("Deleting Blobs")
+    upload_container_client = ContainerClient.from_connection_string(CONNECTIONSTRING, INPUT_CONTAINER_NAME)
+    download_container_client = ContainerClient.from_connection_string(CONNECTIONSTRING, OUTPUT_CONTAINER_NAME)
+    upload_blobs = upload_container_client.list_blobs()
+    download_blobs = download_container_client.list_blobs()
+    for blob in upload_blobs:
+        upload_container_client.get_blob_client(blob).delete_blob()
+    for blob in download_blobs:
+        download_container_client.get_blob_client(blob).delete_blob()
+    return redirect('https://example.com/')
 
 def about(request):
     return render(request, 'landing/about.html')
